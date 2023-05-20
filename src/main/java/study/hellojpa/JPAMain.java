@@ -9,6 +9,9 @@ import study.hellojpa.domian.Book;
 @Component
 public class JPAMain {
 
+//    private static EntityManagerFactory emf;
+//    private static EntityManager em = emf.createEntityManager("hello");
+
     @PersistenceContext
     private EntityManager em;
 
@@ -17,6 +20,8 @@ public class JPAMain {
     public void run() {
 
         try {
+//            EntityTransaction tx = em.getTransaction();
+//            tx.begin();
 
             Book book = new Book();
             book.setName("JPA");
@@ -24,6 +29,8 @@ public class JPAMain {
 
             em.persist(book);
 
+        }  catch (Exception e) {
+//            tx.rollback();
         } finally {
             em.close();
         }
