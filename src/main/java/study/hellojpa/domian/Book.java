@@ -1,10 +1,8 @@
-package study.hellojpa.entity;
+package study.hellojpa.domian;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
-@Entity(name = "exam_book")
-@DiscriminatorValue("B")
+@Entity
 public class Book extends Item {
 
     private String author;
@@ -25,5 +23,4 @@ public class Book extends Item {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
-
 }

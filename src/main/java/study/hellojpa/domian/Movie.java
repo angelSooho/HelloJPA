@@ -1,10 +1,8 @@
-package study.hellojpa.entity;
+package study.hellojpa.domian;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
-@Entity(name = "exam_movie")
-@DiscriminatorValue("M")
+@Entity
 public class Movie extends Item {
 
     private String director;
@@ -25,4 +23,5 @@ public class Movie extends Item {
     public void setActor(String actor) {
         this.actor = actor;
     }
+
 }

@@ -1,13 +1,12 @@
-package study.hellojpa.entity;
+package study.hellojpa.domian;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
-@Entity(name = "exam_album")
-@DiscriminatorValue("A")
+@Entity
 public class Album extends Item {
 
     private String artist;
+    private String etc;
 
     public String getArtist() {
         return artist;
@@ -15,5 +14,13 @@ public class Album extends Item {
 
     public void setArtist(String artist) {
         this.artist = artist;
+    }
+
+    public String getEtc() {
+        return etc;
+    }
+
+    public void setEtc(String etc) {
+        this.etc = etc;
     }
 }
