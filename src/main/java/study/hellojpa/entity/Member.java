@@ -31,4 +31,24 @@ public class Member extends BaseTimeEntity {
     public void setLocker(Locker locker) {
         this.locker = locker;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public Locker getLocker() {
+        return locker;
+    }
 }
