@@ -8,7 +8,7 @@ public class OrderItem extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
 
     public Order getOrder() {

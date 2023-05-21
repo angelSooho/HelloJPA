@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.FetchType.*;
+
 @Entity
 @Table(name = "ORDERS")
 public class Order extends BaseTimeEntity {
@@ -13,15 +16,15 @@ public class Order extends BaseTimeEntity {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order",  cascade = ALL)
     private List<OrderItem> orderItems;
 
     private LocalDateTime orderDate;

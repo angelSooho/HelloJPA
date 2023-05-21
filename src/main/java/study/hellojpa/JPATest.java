@@ -1,15 +1,16 @@
 package study.hellojpa;
 
-import jakarta.persistence.*;
-import org.hibernate.Hibernate;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import study.hellojpa.domian.Book;
-import study.hellojpa.entity.*;
+import study.hellojpa.entity.Child;
+import study.hellojpa.entity.Parent;
 
 @Component
-public class JPAMain {
+public class JPATest {
 
 //    private static EntityManagerFactory emf;
 //    private static EntityManager em = emf.createEntityManager("hello");
@@ -19,27 +20,18 @@ public class JPAMain {
 
     @Bean
     @Transactional
-    public void runMain() {
+    public void runTest() {
 
         try {
-            System.out.println("========================================Main===================================================");
+            System.out.println("===========================================Test=================================================");
 //            EntityTransaction tx = em.getTransaction();
 //            tx.begin();
 
-            Child child1 = new Child();
-            Child child2 = new Child();
+            Book book = new Book();
+            book.setName("JPA");
+            book.setAuthor("김영한");
 
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent);
-
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            em.remove(findParent);
+            em.persist(book);
 
             // tx.commit();
             System.out.println("================================================================================================");
