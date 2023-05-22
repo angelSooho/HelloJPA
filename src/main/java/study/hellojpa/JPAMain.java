@@ -8,7 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import study.hellojpa.domian.Book;
 import study.hellojpa.entity.*;
 
-@Component
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
+//@Component
 public class JPAMain {
 
 //    private static EntityManagerFactory emf;
@@ -26,30 +30,46 @@ public class JPAMain {
 //            EntityTransaction tx = em.getTransaction();
 //            tx.begin();
 
-            Address address =  new Address("city", "street", "10000");
+            Member member = new Member();
+            member.setUsername("member");
+            member.setAddress(new Address("home",  "street1", "10000"));
 
-            Member member1 = new Member();
-            member1.setUsername("member1");
-            member1.setAddress(address);
-            em.persist(member1);
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
 
-            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode());
+            member.getAddressHistory().add(new AddressEntity("old1", "street1", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old2", "street1", "10000"));
 
-            Member member2 = new Member();
-            member2.setUsername("member2");
-            member2.setAddress(newAddress);
-            em.persist(member2);
+            em.persist(member);
 
-            Address address1 = new Address("city", "street", "10000");
-            Address address2 = new Address("city", "street", "10000");
+            em.flush();
+            em.clear();
 
-//            System.out.println("address1 == address2 : " + (address1 == address2));
-            System.out.println("address1 equals address2 : " + (address1.equals(address2)));
+            Member findMember = em.find(Member.class, member.getId());
 
+            List<AddressEntity> addressHistory = findMember.getAddressHistory();
+            System.out.println("addressHistory = " + addressHistory);
 
+            for (AddressEntity address : addressHistory) {
+                System.out.println("address = " + address.getAddress().getStreet());
+            }
+
+            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+            System.out.println("favoriteFoods = " + favoriteFoods);
+
+            for (String favoriteFood : favoriteFoods) {
+                System.out.println("favoriteFood = " + favoriteFood);
+            }
+
+            Address address = findMember.getAddress();
+            findMember.setAddress(new Address("new City", address.getStreet(), address.getZipcode()));
+
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("한식");
 
             // tx.commit();
-            System.out.println("================================================================================================");
+            System.out.println("===================z=============================================================================");
         } catch (Exception e) {
 //            tx.rollback();
             e.printStackTrace();

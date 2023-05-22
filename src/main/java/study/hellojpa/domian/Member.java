@@ -1,9 +1,15 @@
 package study.hellojpa.domian;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import study.hellojpa.entity.Team;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
+@Getter @Setter
 public class Member extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,16 +19,9 @@ public class Member extends BaseTimeEntity {
     @Column(name = "USERNAME")
     private String username;
 
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
-    private Team team;
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
+    @Embedded
+    private Address address;
 }
