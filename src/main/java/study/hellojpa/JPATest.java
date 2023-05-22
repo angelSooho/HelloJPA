@@ -9,7 +9,7 @@ import study.hellojpa.domian.Book;
 import study.hellojpa.entity.Child;
 import study.hellojpa.entity.Parent;
 
-@Component
+//@Component
 public class JPATest {
 
 //    private static EntityManagerFactory emf;

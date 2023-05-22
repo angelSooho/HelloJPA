@@ -1,6 +1,9 @@
 package study.hellojpa;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.Hibernate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -12,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-//@Component
+@Component
 public class JPAMain {
 
 //    private static EntityManagerFactory emf;
@@ -30,43 +33,29 @@ public class JPAMain {
 //            EntityTransaction tx = em.getTransaction();
 //            tx.begin();
 
-            Member member = new Member();
-            member.setUsername("member");
-            member.setAddress(new Address("home",  "street1", "10000"));
+            List<Member> result = em.createQuery(
+                    "select m from Member m where m.username like '%kim%'", Member.class
+            ).getResultList();
 
-            member.getFavoriteFoods().add("치킨");
-            member.getFavoriteFoods().add("족발");
-            member.getFavoriteFoods().add("피자");
-
-            member.getAddressHistory().add(new AddressEntity("old1", "street1", "10000"));
-            member.getAddressHistory().add(new AddressEntity("old2", "street1", "10000"));
-
-            em.persist(member);
-
-            em.flush();
-            em.clear();
-
-            Member findMember = em.find(Member.class, member.getId());
-
-            List<AddressEntity> addressHistory = findMember.getAddressHistory();
-            System.out.println("addressHistory = " + addressHistory);
-
-            for (AddressEntity address : addressHistory) {
-                System.out.println("address = " + address.getAddress().getStreet());
+            for (Member member : result) {
+                System.out.println("member = " + member);
             }
 
-            Set<String> favoriteFoods = findMember.getFavoriteFoods();
-            System.out.println("favoriteFoods = " + favoriteFoods);
+            // Criteria 사용 준비
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Member> query = cb.createQuery(Member.class);
 
-            for (String favoriteFood : favoriteFoods) {
-                System.out.println("favoriteFood = " + favoriteFood);
+            Root<Member> m = query.from(Member.class);
+
+            CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
+
+            List<Member> resultList = em.createQuery(cq).getResultList();
+
+            List<Member> list = em.createNativeQuery("select MEMBER_ID, city, street, zipcode, USERNAME from MEMBER", Member.class).getResultList();
+
+            for (Member member : list) {
+                System.out.println("member = " + member);
             }
-
-            Address address = findMember.getAddress();
-            findMember.setAddress(new Address("new City", address.getStreet(), address.getZipcode()));
-
-            findMember.getFavoriteFoods().remove("치킨");
-            findMember.getFavoriteFoods().add("한식");
 
             // tx.commit();
             System.out.println("===================z=============================================================================");
