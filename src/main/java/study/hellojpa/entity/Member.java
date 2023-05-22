@@ -1,9 +1,16 @@
 package study.hellojpa.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Entity(name = "example_member")
-public class Member extends BaseTimeEntity {
+@Getter
+@Setter
+public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID")
@@ -12,43 +19,27 @@ public class Member extends BaseTimeEntity {
     @Column(name = "USERNAME")
     private String username;
 
+    @Embedded
+    private Address address;
+
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD",  joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name = "ADDRESS_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    private List<Address> addressHistory = new ArrayList<>();
+
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
+    @Embedded
+    private Period workPeriod;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    public void setLocker(Locker locker) {
-        this.locker = locker;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public Locker getLocker() {
-        return locker;
-    }
+    @Embedded
+    private Address address;
 }

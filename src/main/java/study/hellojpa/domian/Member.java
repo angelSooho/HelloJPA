@@ -1,7 +1,6 @@
 package study.hellojpa.domian;
 
 import jakarta.persistence.*;
-import study.hellojpa.entity.Locker;
 import study.hellojpa.entity.Team;
 
 @Entity
@@ -18,10 +17,6 @@ public class Member extends BaseTimeEntity {
     @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
     private Team team;
 
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -30,7 +25,4 @@ public class Member extends BaseTimeEntity {
         this.team = team;
     }
 
-    public void setLocker(Locker locker) {
-        this.locker = locker;
-    }
 }

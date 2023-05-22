@@ -26,24 +26,31 @@ public class JPAMain {
 //            EntityTransaction tx = em.getTransaction();
 //            tx.begin();
 
-            Child child1 = new Child();
-            Child child2 = new Child();
+            Address address =  new Address("city", "street", "10000");
 
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setAddress(address);
+            em.persist(member1);
 
-            em.persist(parent);
+            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode());
 
-            em.flush();
-            em.clear();
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setAddress(newAddress);
+            em.persist(member2);
 
-            Parent findParent = em.find(Parent.class, parent.getId());
-            em.remove(findParent);
+            Address address1 = new Address("city", "street", "10000");
+            Address address2 = new Address("city", "street", "10000");
+
+//            System.out.println("address1 == address2 : " + (address1 == address2));
+            System.out.println("address1 equals address2 : " + (address1.equals(address2)));
+
+
 
             // tx.commit();
             System.out.println("================================================================================================");
-        }  catch (Exception e) {
+        } catch (Exception e) {
 //            tx.rollback();
             e.printStackTrace();
         } finally {
