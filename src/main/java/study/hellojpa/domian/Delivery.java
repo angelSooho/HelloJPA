@@ -11,8 +11,8 @@ public class Delivery extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
-    private Address address;
+//    @Embedded
+//    private Address address;
 
     private DeliveryStatus status;
 

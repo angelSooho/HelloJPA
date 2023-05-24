@@ -8,7 +8,7 @@ import study.hellojpa.entity.Team;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "MEMBER2")
 @Getter @Setter
 public class Member extends BaseTimeEntity {
 
@@ -22,6 +22,6 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
-    @Embedded
-    private Address address;
+//    @Embedded
+//    private Address address;
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.FetchType.*;
 
-@Entity
+@Entity(name = "order2")
 @Table(name = "ORDERS")
 public class Order extends BaseTimeEntity {
 

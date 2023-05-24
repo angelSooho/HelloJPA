@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-@Component
+//@Component
 public class JPAMain {
 
 //    private static EntityManagerFactory emf;
