@@ -44,11 +44,6 @@ public class JpqlMain {
             // 반환 타입이 명확하지 않을 때 사용
             Query query2 = em.createQuery("select m.username, m.age from Member m");
 
-
-            for (Member member1 : resultList) {
-                System.out.println("member = " + member1);
-            }
-
 //            Member singleResult = query1.getSingleResult();
 //            System.out.println("singleResult = " + singleResult);
 
