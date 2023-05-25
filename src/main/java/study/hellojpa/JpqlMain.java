@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import study.hellojpa.entity.*;
 import study.hellojpa.jpql.Member;
+import study.hellojpa.jpql.MemberDto;
 
 import java.util.List;
 
@@ -42,7 +43,13 @@ public class JpqlMain {
             List<Member> resultList = em.createQuery("select m from Member m where m.username = :username", Member.class) //  where m.id = 10
                     .setParameter("username", "member1").getResultList();
             // 반환 타입이 명확하지 않을 때 사용
-            Query query2 = em.createQuery("select m.username, m.age from Member m");
+            List<MemberDto> list = em.createQuery("select new study.hellojpa.jpql.MemberDto(m.username, m.age) from Member m", MemberDto.class)
+                    .getResultList();
+
+            MemberDto memberDto = list.get(0);
+            System.out.println("username = " + memberDto.getUsername());
+            System.out.println("age = " + memberDto.getAge());
+
 
 //            Member singleResult = query1.getSingleResult();
 //            System.out.println("singleResult = " + singleResult);
