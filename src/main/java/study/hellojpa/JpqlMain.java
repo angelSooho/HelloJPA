@@ -7,9 +7,9 @@ import jakarta.persistence.criteria.Root;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import study.hellojpa.entity.*;
 import study.hellojpa.jpql.Member;
 import study.hellojpa.jpql.MemberDto;
+import study.hellojpa.jpql.Team;
 
 import java.util.List;
 
@@ -31,26 +31,39 @@ public class JpqlMain {
 //            EntityTransaction tx = em.getTransaction();
 //            tx.begin();
 
-            for(int i = 1; i <= 100; i++) {
-                Member member = new Member();
-                member.setUsername("member_" + i);
-                member.setAge(i);
-                em.persist(member);
-            }
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("관리자");
+            member.setAge(10);
+            member.changeTeam(team);
+            em.persist(member);
 
             em.flush();
             em.clear();
 
-            List<Member> result = em.createQuery("select m from Member m order by m.age", Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(10)
+            String query =
+                    "select " +
+                    "case " +
+                        "when m.age <= 10 then '학생요금' " +
+                        "when m.age >= 60 then '경로요금' " +
+                        "else '일반요금' end" +
+                    " from Member m";
+
+            String query2 = "select coalesce(m.username, '이름 없는 회원') from Member m";
+            String query3 = "select nullif(m.username, '관리자') from Member m";
+            String query4 = "select function('group_concat', m.username) from Member m";
+
+
+            List<String> resultList = em.createQuery(query3, String.class)
                     .getResultList();
 
-            System.out.println("resultsize = " + result.size());
-            System.out.println("result. = " + result.size());
-            for (Member member1 : result) {
-                System.out.println("member1 = " + member1);
+            for (String s : resultList) {
+                System.out.println("s = " + s);
             }
+
 
             // tx.commit();
             System.out.println("===============================================================================================");

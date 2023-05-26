@@ -16,7 +16,7 @@ public class Team {
 
     private String name;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
     private List<Member> member = new ArrayList<>();
 
     @Override
