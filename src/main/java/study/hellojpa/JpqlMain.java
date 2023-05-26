@@ -31,28 +31,26 @@ public class JpqlMain {
 //            EntityTransaction tx = em.getTransaction();
 //            tx.begin();
 
-            Member member = new Member();
-            member.setUsername("member1");
-            member.setAge(10);
-            em.persist(member);
+            for(int i = 1; i <= 100; i++) {
+                Member member = new Member();
+                member.setUsername("member_" + i);
+                member.setAge(i);
+                em.persist(member);
+            }
 
             em.flush();
             em.clear();
 
-            // 반환 타입이 명확할 때 사용
-            List<Member> resultList = em.createQuery("select m from Member m where m.username = :username", Member.class) //  where m.id = 10
-                    .setParameter("username", "member1").getResultList();
-            // 반환 타입이 명확하지 않을 때 사용
-            List<MemberDto> list = em.createQuery("select new study.hellojpa.jpql.MemberDto(m.username, m.age) from Member m", MemberDto.class)
+            List<Member> result = em.createQuery("select m from Member m order by m.age", Member.class)
+                    .setFirstResult(0)
+                    .setMaxResults(10)
                     .getResultList();
 
-            MemberDto memberDto = list.get(0);
-            System.out.println("username = " + memberDto.getUsername());
-            System.out.println("age = " + memberDto.getAge());
-
-
-//            Member singleResult = query1.getSingleResult();
-//            System.out.println("singleResult = " + singleResult);
+            System.out.println("resultsize = " + result.size());
+            System.out.println("result. = " + result.size());
+            for (Member member1 : result) {
+                System.out.println("member1 = " + member1);
+            }
 
             // tx.commit();
             System.out.println("===============================================================================================");
