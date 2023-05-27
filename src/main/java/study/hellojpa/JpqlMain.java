@@ -1,16 +1,13 @@
 package study.hellojpa;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import study.hellojpa.jpql.Member;
-import study.hellojpa.jpql.MemberDto;
 import study.hellojpa.jpql.Team;
 
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -31,39 +28,46 @@ public class JpqlMain {
 //            EntityTransaction tx = em.getTransaction();
 //            tx.begin();
 
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
+            Team teamA = new Team();
+            teamA.setName("teamA");
+            em.persist(teamA);
 
-            Member member = new Member();
-            member.setUsername("관리자");
-            member.setAge(10);
-            member.changeTeam(team);
-            em.persist(member);
+            Team teamB = new Team();
+            teamB.setName("teamB");
+            em.persist(teamB);
+
+            Team teamC = new Team();
+            teamC.setName("teamC");
+            em.persist(teamC);
+
+            Member member1 = new Member();
+            member1.setUsername("회원1");
+            member1.setAge(10);
+            member1.changeTeam(teamA);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("회원2");
+            member2.setAge(10);
+            member2.changeTeam(teamA);
+            em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setUsername("회원3");
+            member3.setAge(10);
+            member3.changeTeam(teamB);
+            em.persist(member3);
 
             em.flush();
             em.clear();
 
-            String query =
-                    "select " +
-                    "case " +
-                        "when m.age <= 10 then '학생요금' " +
-                        "when m.age >= 60 then '경로요금' " +
-                        "else '일반요금' end" +
-                    " from Member m";
+            String jpql = "SELECT t from Team t join fetch t.members";
 
-            String query2 = "select coalesce(m.username, '이름 없는 회원') from Member m";
-            String query3 = "select nullif(m.username, '관리자') from Member m";
-            String query4 = "select function('group_concat', m.username) from Member m";
+            List<Team> resultList = em.createQuery(jpql, Team.class).getResultList();
 
-
-            List<String> resultList = em.createQuery(query3, String.class)
-                    .getResultList();
-
-            for (String s : resultList) {
-                System.out.println("s = " + s);
+            for (Team team : resultList) {
+                System.out.println("team = " + team.getName() + ", " + team.getMembers());
             }
-
 
             // tx.commit();
             System.out.println("===============================================================================================");
