@@ -58,16 +58,18 @@ public class JpqlMain {
             member3.changeTeam(teamB);
             em.persist(member3);
 
-            em.flush();
+//            em.flush();
+//            em.clear();
+
+            int resultCount = em.createQuery("update Member m set m.age = 20")
+                    .executeUpdate();
+
             em.clear();
 
-            String jpql = "SELECT t from Team t join fetch t.members";
+            Member findMember = em.find(Member.class, member1.getId());
 
-            List<Team> resultList = em.createQuery(jpql, Team.class).getResultList();
-
-            for (Team team : resultList) {
-                System.out.println("team = " + team.getName() + ", " + team.getMembers());
-            }
+            System.out.println("findMember = " + findMember.getAge());
+            System.out.println("resultCount = " + resultCount);
 
             // tx.commit();
             System.out.println("===============================================================================================");
